@@ -37,21 +37,25 @@ namespace MyLibrary
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
                 var book = ctx.Books.Where(b => b.Id == selector);
-                var pubJoin = ctx.Books
+
+                var pubJoin = book
                     .Join(ctx.Publishers,
                     b => b.PublisherId,
                     p => p.Id,
-                    (b, p) => new { b.PublisherId, p });
-                
-                foreach (var item in book)
+                    (b, p) => new 
+                    { b, p });
+
+                foreach (var item in pubJoin)
                 {
-                    gbxData.Text = item.Titel;
-                    lblData.Text += $"{item.AantalPaginas}\n\n";
-                    lblData.Text += $"{item.publicatie}\n\n";
-                    lblData.Text += $"{item.Score}\n\n";
-                    lblData.Text += $"{item.PublisherId}"; // needs to be the name of publisher through join
+
+                    gbxData.Text = $"{item.b.Titel}";
+                    lblData.Text += $"{item.b.AantalPaginas}\n\n";
+                    lblData.Text += $"{item.b.publicatie}\n\n";
+                    lblData.Text += $"{item.b.Score}\n\n";
+                    lblData.Text += $"{item.p.Naam}";
                 }
             }
+
         }
     }
 }

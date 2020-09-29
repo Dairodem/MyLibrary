@@ -50,7 +50,7 @@
             this.gbxData.Controls.Add(this.lblData);
             this.gbxData.Location = new System.Drawing.Point(171, 12);
             this.gbxData.Name = "gbxData";
-            this.gbxData.Size = new System.Drawing.Size(146, 162);
+            this.gbxData.Size = new System.Drawing.Size(209, 252);
             this.gbxData.TabIndex = 1;
             this.gbxData.TabStop = false;
             this.gbxData.Text = "ThisBook";
