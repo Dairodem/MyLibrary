@@ -33,17 +33,43 @@ namespace MyLibrary
 
             int selector = Convert.ToInt32(lbxBooks.SelectedValue);
             lblData.Text = $"{selector}\n\n";
+            lblAuthors.Text = "";
+            int c = 0;
 
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
                 var book = ctx.Books.Where(b => b.Id == selector);
 
+                //---Join Book with Publisher
                 var pubJoin = book
                     .Join(ctx.Publishers,
                     b => b.PublisherId,
                     p => p.Id,
                     (b, p) => new 
                     { b, p });
+
+                //--Join Book with Genre
+                var genreJoin = book
+                    .Join(ctx.BookGenres,
+                    b => b.Id,
+                    bg => bg.BookId,
+                    (b, bg) => new { b, bg })
+                    .Join(ctx.Genres,
+                    bg2 => bg2.bg.GenreId,
+                    g => g.Id,
+                    (bg2, g) => new {bg2, g });
+
+                //--Join Book with Authors
+                var authorJoin = book
+                    .Join(ctx.BookAuthors,
+                    b => b.Id,
+                    ba => ba.BookId,
+                    (b, ba) => new { b, ba })
+                    .Join(ctx.Authors,
+                    ba2 => ba2.ba.AuthorId,
+                    a => a.Id,
+                    (ba2, a) => new { ba2, a });
+
 
                 foreach (var item in pubJoin)
                 {
@@ -53,6 +79,19 @@ namespace MyLibrary
                     lblData.Text += $"{item.b.publicatie}\n\n";
                     lblData.Text += $"{item.b.Score}\n\n";
                     lblData.Text += $"{item.p.Naam}";
+                }
+                foreach (var item in genreJoin)
+                {
+                    lblGenre.Text = item.g.Genre1;
+                }
+                foreach (var item in authorJoin)
+                {
+                    //if (c>0)
+                    //{
+                    //    lblAuthors.Text += ", ";
+                    //}
+                    lblAuthors.Text += $"{item.a.Voornaam} {item.a.Achternaam}\n";
+                    c++;
                 }
             }
 
