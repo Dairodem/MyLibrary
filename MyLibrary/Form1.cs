@@ -34,7 +34,6 @@ namespace MyLibrary
             int selector = Convert.ToInt32(lbxBooks.SelectedValue);
             lblData.Text = $"{selector}\n\n";
             lblAuthors.Text = "";
-            int c = 0;
 
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
@@ -86,12 +85,7 @@ namespace MyLibrary
                 }
                 foreach (var item in authorJoin)
                 {
-                    //if (c>0)
-                    //{
-                    //    lblAuthors.Text += ", ";
-                    //}
                     lblAuthors.Text += $"{item.a.Voornaam} {item.a.Achternaam}\n";
-                    c++;
                 }
             }
 
