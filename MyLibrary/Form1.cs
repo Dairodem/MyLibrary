@@ -11,14 +11,16 @@ using System.Windows.Forms;
 
 /*------------------------ TO DO ------------------------------
  * 
- * bij nieuw boek; selectie mogelijk maken voor auteurs en genres
- * bij nieuw boek; tabel 'bookAuthor' en 'bookGenre' ook aanpassen
+ * bij elke addform een result = ok op btnAdd
+ * switch inorde brengen
+ * testen van de add functies
  * 
  * 
- * ------------------------------------------------------------
  * toevoegen van uitgever
  * toevoegen van auteurs
  * toevoegen van genres
+ * 
+ * 
  * 
  * bewerken van boeken
  * sorteren van boekenlijst
@@ -114,6 +116,66 @@ namespace MyLibrary
                 lbxBooks.DataSource = booklist;
             }
         }
+        private void ShowSelectionForm()
+        {
+            FormAdd formAdd = new FormAdd();
+
+            if (formAdd.ShowDialog() == DialogResult.OK)
+            {
+                switch (formAdd.Selection)
+                {
+                    case "Boek":
+                        ShowBookForm();
+                        break;
+                    case "Auteur":
+                        ShowAuthorForm();
+                        break;
+                    case "Genre":
+                        ShowGenreForm();
+                        break;
+                    case "Uitgeverij":
+                        ShowPublisherForm();
+                        break;
+                    default:
+                        MessageBox.Show("Error");
+                        break;
+                }
+            }
+
+        }
+        private void ShowBookForm()
+        {
+            FormAddBook formAddBook = new FormAddBook();
+            if (formAddBook.ShowDialog() == DialogResult.OK)
+            {
+                LoadBookList();
+            }
+
+        }
+        private void ShowAuthorForm()
+        {
+            FormAddAuthor formAddAuthor = new FormAddAuthor();
+            if (formAddAuthor.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
+        private void ShowGenreForm()
+        {
+            FormAddGenre formAddGenre = new FormAddGenre();
+            if (formAddGenre.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
+        private void ShowPublisherForm()
+        {
+            FormAddPublisher formAddPublisher = new FormAddPublisher();
+            if (formAddPublisher.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
 
         private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -122,12 +184,7 @@ namespace MyLibrary
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            FormAddBook formAddBook = new FormAddBook();
-            if (formAddBook.ShowDialog() == DialogResult.OK)
-            {
-
-                LoadBookList();
-            }
+            ShowSelectionForm();
         }
     }
 }
