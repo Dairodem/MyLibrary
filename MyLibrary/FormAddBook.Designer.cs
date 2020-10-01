@@ -39,6 +39,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.BtnAdd = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lvAuthors = new System.Windows.Forms.ListView();
+            this.lvGenres = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.numYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPages)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numScore)).BeginInit();
@@ -63,14 +67,14 @@
             // cbxPublisher
             // 
             this.cbxPublisher.FormattingEnabled = true;
-            this.cbxPublisher.Location = new System.Drawing.Point(169, 54);
+            this.cbxPublisher.Location = new System.Drawing.Point(169, 208);
             this.cbxPublisher.Name = "cbxPublisher";
             this.cbxPublisher.Size = new System.Drawing.Size(193, 23);
             this.cbxPublisher.TabIndex = 2;
             // 
             // numYear
             // 
-            this.numYear.Location = new System.Drawing.Point(169, 86);
+            this.numYear.Location = new System.Drawing.Point(169, 240);
             this.numYear.Maximum = new decimal(new int[] {
             2500,
             0,
@@ -88,7 +92,7 @@
             // 
             // numPages
             // 
-            this.numPages.Location = new System.Drawing.Point(169, 116);
+            this.numPages.Location = new System.Drawing.Point(169, 270);
             this.numPages.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -111,7 +115,7 @@
             // 
             // numScore
             // 
-            this.numScore.Location = new System.Drawing.Point(169, 146);
+            this.numScore.Location = new System.Drawing.Point(169, 300);
             this.numScore.Maximum = new decimal(new int[] {
             10,
             0,
@@ -130,7 +134,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(75, 57);
+            this.label1.Location = new System.Drawing.Point(75, 211);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 16);
             this.label1.TabIndex = 6;
@@ -139,7 +143,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 88);
+            this.label2.Location = new System.Drawing.Point(44, 242);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 16);
             this.label2.TabIndex = 7;
@@ -148,7 +152,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(33, 118);
+            this.label3.Location = new System.Drawing.Point(33, 272);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(104, 16);
             this.label3.TabIndex = 8;
@@ -157,7 +161,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(90, 148);
+            this.label4.Location = new System.Drawing.Point(90, 302);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 16);
             this.label4.TabIndex = 9;
@@ -165,7 +169,7 @@
             // 
             // BtnAdd
             // 
-            this.BtnAdd.Location = new System.Drawing.Point(169, 188);
+            this.BtnAdd.Location = new System.Drawing.Point(169, 327);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(194, 28);
             this.BtnAdd.TabIndex = 10;
@@ -173,11 +177,58 @@
             this.BtnAdd.UseVisualStyleBackColor = true;
             this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(75, 54);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 16);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Auteur(s):";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(74, 134);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 16);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Genre(s):";
+            // 
+            // lvAuthors
+            // 
+            this.lvAuthors.CheckBoxes = true;
+            this.lvAuthors.FullRowSelect = true;
+            this.lvAuthors.HideSelection = false;
+            this.lvAuthors.Location = new System.Drawing.Point(169, 54);
+            this.lvAuthors.Name = "lvAuthors";
+            this.lvAuthors.ShowGroups = false;
+            this.lvAuthors.Size = new System.Drawing.Size(193, 74);
+            this.lvAuthors.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lvAuthors.TabIndex = 15;
+            this.lvAuthors.UseCompatibleStateImageBehavior = false;
+            this.lvAuthors.View = System.Windows.Forms.View.SmallIcon;
+            // 
+            // lvGenres
+            // 
+            this.lvGenres.CheckBoxes = true;
+            this.lvGenres.HideSelection = false;
+            this.lvGenres.Location = new System.Drawing.Point(169, 134);
+            this.lvGenres.Name = "lvGenres";
+            this.lvGenres.Size = new System.Drawing.Size(193, 68);
+            this.lvGenres.TabIndex = 16;
+            this.lvGenres.UseCompatibleStateImageBehavior = false;
+            this.lvGenres.View = System.Windows.Forms.View.SmallIcon;
+            // 
             // FormAddBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 245);
+            this.ClientSize = new System.Drawing.Size(400, 366);
+            this.Controls.Add(this.lvGenres);
+            this.Controls.Add(this.lvAuthors);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -194,7 +245,7 @@
             this.MaximizeBox = false;
             this.Name = "FormAddBook";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "FormAdd";
+            this.Text = "Boek Toevoegen";
             this.Load += new System.EventHandler(this.FormAddBook_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numYear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPages)).EndInit();
@@ -217,5 +268,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ListView lvAuthors;
+        private System.Windows.Forms.ListView lvGenres;
     }
 }

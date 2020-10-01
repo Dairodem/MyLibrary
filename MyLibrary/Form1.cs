@@ -95,7 +95,7 @@ namespace MyLibrary
                 }
                 foreach (var item in genreJoin)
                 {
-                    lblGenre.Text = item.g.Genre1;
+                    lblGenre.Text += $"{item.g.Genre1}\n";
                 }
                 foreach (var item in authorJoin)
                 {
@@ -125,18 +125,6 @@ namespace MyLibrary
             FormAddBook formAddBook = new FormAddBook();
             if (formAddBook.ShowDialog() == DialogResult.OK)
             {
-                using (BibliotheekEntities ctx = new BibliotheekEntities())
-                {
-                    ctx.Books.Add(new Book() 
-                    { 
-                        Titel = formAddBook.Title,
-                        AantalPaginas = formAddBook.Pages,
-                        publicatie = formAddBook.Year,
-                        PublisherId = formAddBook.PublisherId,
-                        Score = formAddBook.Score
-                    });
-                    ctx.SaveChanges();
-                }
 
                 LoadBookList();
             }

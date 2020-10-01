@@ -18,6 +18,7 @@ namespace MyLibrary
         public int Year;
         public int Pages;
         public int Score;
+        public List<string> Authors;
 
         public FormAddBook()
         {
@@ -26,6 +27,8 @@ namespace MyLibrary
         private void FormAddBook_Load(object sender, EventArgs e)
         {
             LoadPublisherList();
+            LoadAuthorList();
+            LoadGenreList();
         }
         private void LoadPublisherList()
         {
@@ -37,15 +40,71 @@ namespace MyLibrary
                 cbxPublisher.DataSource = PubList;
             }
         }
+        private void LoadAuthorList()
+        {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                var autList = ctx.Authors.Select(x => new { Id = x.Id, Naam = x.Voornaam + " " + x.Achternaam }).ToList();
+                foreach (var author in autList)
+                {
+                    lvAuthors.Items.Add(author.Naam);
+                }
+            }
 
+        }
+        private void LoadGenreList()
+        {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                var genreList = ctx.Genres.Select(x => x).ToList();
+                foreach (var genre in genreList)
+                {
+                    lvGenres.Items.Add(genre.Genre1);
+                }
+
+            }
+        }
         private void BtnAdd_Click(object sender, EventArgs e)
         {
-            Title = txtTitle.Text;
-            PublisherId = (int)cbxPublisher.SelectedValue;
-            Year = (int)numYear.Value;
-            Pages = (int)numPages.Value;
-            Score = (int)numScore.Value;
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                //--Nieuw boek aanmaken
+                Book newBook = new Book()
+                {
+                    Titel = txtTitle.Text,
+                    AantalPaginas = (int)numPages.Value,
+                    publicatie = (int)numYear.Value,
+                    PublisherId = (int)cbxPublisher.SelectedValue,
+                    Score = (int)numScore.Value
+                };
+                ctx.Books.Add(newBook);
+                ctx.SaveChanges();
 
+                //--Nieuw Book-Auteur Tussentabel  entry voor elke auteur
+                foreach (ListViewItem author in lvAuthors.CheckedItems)
+                {
+                    int entry = ctx.Authors.Where(a => (a.Voornaam + " " + a.Achternaam) == author.Text).Select(x => x.Id).FirstOrDefault();
+
+                    ctx.BookAuthors.Add(new BookAuthor()
+                    {
+                        BookId = newBook.Id,
+                        AuthorId = entry
+                    });
+                }
+
+                //--Nieuw Book-Genre Tussentabel  entry voor elk genre
+                foreach (ListViewItem genre in lvGenres.CheckedItems)
+                {
+                    int entry = ctx.Genres.Where(a => a.Genre1 == genre.Text).Select(x => x.Id).FirstOrDefault();
+
+                    ctx.BookGenres.Add(new BookGenre()
+                    {
+                        BookId = newBook.Id,
+                        GenreId = entry
+                    });
+                }
+                ctx.SaveChanges();
+            }
             DialogResult = DialogResult.OK;
         }
 
