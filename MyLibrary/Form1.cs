@@ -11,18 +11,17 @@ using System.Windows.Forms;
 
 /*------------------------ TO DO ------------------------------
  * 
- * bij elke addform een result = ok op btnAdd
- * switch inorde brengen
- * testen van de add functies
+ * Bewerken van boeken
  * 
- * 
- * toevoegen van uitgever
- * toevoegen van auteurs
- * toevoegen van genres
+ * -bij bewerken; data controleren of ze al dan niet veranderd zijn bij de listview
  * 
  * 
  * 
- * bewerken van boeken
+ * verwijderen van boeken
+ * 
+ * - alle data uit database verwijderen
+ * 
+ * 
  * sorteren van boekenlijst
  * (meerdere) filters toepassen
  * 
@@ -207,10 +206,21 @@ namespace MyLibrary
             formChangeBook.Year = Convert.ToInt32(lblPublYear.Text);
             formChangeBook.Pages = Convert.ToInt32(lblPages.Text);
             formChangeBook.Score = Convert.ToInt32(lblScore.Text);
+            formChangeBook.Id = Convert.ToInt32(lblid.Text);
+
+            foreach (string author in lbxAuthors.Items)
+            {
+                formChangeBook.AuthorsList.Add(author);
+            }
+
+            foreach (string genre in lbxGenres.Items)
+            {
+                formChangeBook.GenreList.Add(genre);
+            }
 
             if (formChangeBook.ShowDialog() == DialogResult.OK)
             {
-
+                // do something after windows closes
             }
         }
     }

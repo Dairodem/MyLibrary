@@ -14,12 +14,14 @@ namespace MyLibrary
     {
 
         public string Title;
+        public int Id;
         public int PublisherId;
         public int Year;
         public int Pages;
         public int Score;
-        //public List<string> Authors;
         public bool IsChanging;
+        public List<string> AuthorsList = new List<string>();
+        public List<string> GenreList = new List<string>();
 
         public FormAddBook(bool isChanging)
         {
@@ -35,8 +37,24 @@ namespace MyLibrary
             if (IsChanging)
             {
                 ChangeTexts();
+                CheckBoxes(lvAuthors,AuthorsList);
+                CheckBoxes(lvGenres, GenreList);
             }
 
+        }
+        private void CheckBoxes(ListView listView, List<string> list)
+        {
+            foreach (string name in list)
+            {
+                foreach (ListViewItem item in listView.Items)
+                {
+                    if (name == item.Text)
+                    {
+                        item.Checked = true;
+                        break;
+                    }
+                }
+            }
         }
         private void ChangeTexts()
         {
@@ -62,7 +80,7 @@ namespace MyLibrary
         {
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
-                var autList = ctx.Authors.Select(x => new { Id = x.Id, Naam = x.Voornaam + " " + x.Achternaam }).ToList();
+                var autList = ctx.Authors.Select(x => new { x.Id, Naam = x.Voornaam + " " + x.Achternaam }).ToList();
                 foreach (var author in autList)
                 {
                     lvAuthors.Items.Add(author.Naam);
@@ -127,6 +145,18 @@ namespace MyLibrary
         }
         private void ChangeBook()
         {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                //--Boek selectered met Id...
+                Book thisBook = ctx.Books.Where(x => x.Id == Id).FirstOrDefault();
+
+                //--Reset gegevens van dit boek
+                thisBook.Titel = txtTitle.Text;
+                thisBook.Score = (int)numScore.Value;
+                thisBook.publicatie = (int)numYear.Value;
+                thisBook.PublisherId = (int)cbxPublisher.SelectedValue;
+                thisBook.AantalPaginas = (int)numPages.Value;
+            }
 
         }
         private void BtnAdd_Click(object sender, EventArgs e)
