@@ -48,9 +48,10 @@ namespace MyLibrary
         private void UpdateData()
         {
             int selector = Convert.ToInt32(lbxBooks.SelectedValue);
-            lblData.Text = $"{selector}\n\n";
-            lblAuthors.Text = "";
-            lblGenre.Text = "";
+            lblid.Text = $"{selector}";
+            lbxAuthors.Items.Clear();
+            lbxGenres.Items.Clear();
+
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
                 var book = ctx.Books.Where(b => b.Id == selector);
@@ -90,18 +91,18 @@ namespace MyLibrary
                 {
 
                     gbxData.Text = $"{item.b.Titel}";
-                    lblData.Text += $"{item.b.AantalPaginas}\n\n";
-                    lblData.Text += $"{item.b.publicatie}\n\n";
-                    lblData.Text += $"{item.b.Score}\n\n";
-                    lblData.Text += $"{item.p.Naam}";
+                    lblPages.Text = $"{item.b.AantalPaginas}";
+                    lblPublYear.Text = $"{item.b.publicatie}";
+                    lblScore.Text = $"{item.b.Score}";
+                    lblPubl.Text = $"{item.p.Naam}";
                 }
                 foreach (var item in genreJoin)
                 {
-                    lblGenre.Text += $"{item.g.Genre1}\n";
+                    lbxGenres.Items.Add(item.g.Genre1);
                 }
                 foreach (var item in authorJoin)
                 {
-                    lblAuthors.Text += $"{item.a.Voornaam} {item.a.Achternaam}\n";
+                    lbxAuthors.Items.Add($"{item.a.Voornaam} {item.a.Achternaam}");
                 }
             }
 
@@ -145,7 +146,9 @@ namespace MyLibrary
         }
         private void ShowBookForm()
         {
-            FormAddBook formAddBook = new FormAddBook();
+            FormAddBook formAddBook = new FormAddBook(false);
+
+
             if (formAddBook.ShowDialog() == DialogResult.OK)
             {
                 LoadBookList();
@@ -176,7 +179,16 @@ namespace MyLibrary
 
             }
         }
+        private int ReturnPublisherId()
+        {
+            int id = 0;
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                id = ctx.Publishers.Where(i => i.Naam == lblPubl.Text).Select(f => f.Id).FirstOrDefault();
+            }
 
+            return id;
+        }
         private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateData();
@@ -185,6 +197,21 @@ namespace MyLibrary
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ShowSelectionForm();
+        }
+
+        private void btnChange_Click(object sender, EventArgs e)
+        {
+            FormAddBook formChangeBook = new FormAddBook(true);
+            formChangeBook.Title = gbxData.Text;
+            formChangeBook.PublisherId = ReturnPublisherId();
+            formChangeBook.Year = Convert.ToInt32(lblPublYear.Text);
+            formChangeBook.Pages = Convert.ToInt32(lblPages.Text);
+            formChangeBook.Score = Convert.ToInt32(lblScore.Text);
+
+            if (formChangeBook.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
     }
 }

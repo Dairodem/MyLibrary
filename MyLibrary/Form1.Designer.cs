@@ -30,15 +30,19 @@
         {
             this.lbxBooks = new System.Windows.Forms.ListBox();
             this.gbxData = new System.Windows.Forms.GroupBox();
-            this.lblAuthors = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.lblGenre = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblData = new System.Windows.Forms.Label();
+            this.lblid = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnChange = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
+            this.lblPages = new System.Windows.Forms.Label();
+            this.lblPublYear = new System.Windows.Forms.Label();
+            this.lblPubl = new System.Windows.Forms.Label();
+            this.lblScore = new System.Windows.Forms.Label();
+            this.lbxAuthors = new System.Windows.Forms.ListBox();
+            this.lbxGenres = new System.Windows.Forms.ListBox();
             this.gbxData.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,27 +58,23 @@
             // 
             // gbxData
             // 
-            this.gbxData.Controls.Add(this.lblAuthors);
+            this.gbxData.Controls.Add(this.lbxGenres);
+            this.gbxData.Controls.Add(this.lbxAuthors);
+            this.gbxData.Controls.Add(this.lblScore);
+            this.gbxData.Controls.Add(this.lblPubl);
+            this.gbxData.Controls.Add(this.lblPublYear);
+            this.gbxData.Controls.Add(this.lblPages);
+            this.gbxData.Controls.Add(this.btnChange);
             this.gbxData.Controls.Add(this.label4);
-            this.gbxData.Controls.Add(this.lblGenre);
             this.gbxData.Controls.Add(this.label2);
             this.gbxData.Controls.Add(this.label1);
-            this.gbxData.Controls.Add(this.lblData);
+            this.gbxData.Controls.Add(this.lblid);
             this.gbxData.Location = new System.Drawing.Point(199, 14);
             this.gbxData.Name = "gbxData";
-            this.gbxData.Size = new System.Drawing.Size(244, 320);
+            this.gbxData.Size = new System.Drawing.Size(244, 408);
             this.gbxData.TabIndex = 1;
             this.gbxData.TabStop = false;
             this.gbxData.Text = "ThisBook";
-            // 
-            // lblAuthors
-            // 
-            this.lblAuthors.AutoSize = true;
-            this.lblAuthors.Location = new System.Drawing.Point(98, 192);
-            this.lblAuthors.Name = "lblAuthors";
-            this.lblAuthors.Size = new System.Drawing.Size(45, 16);
-            this.lblAuthors.TabIndex = 5;
-            this.lblAuthors.Text = "label1";
             // 
             // label4
             // 
@@ -85,23 +85,14 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Auteur(s):";
             // 
-            // lblGenre
-            // 
-            this.lblGenre.AutoSize = true;
-            this.lblGenre.Location = new System.Drawing.Point(98, 251);
-            this.lblGenre.Name = "lblGenre";
-            this.lblGenre.Size = new System.Drawing.Size(45, 16);
-            this.lblGenre.TabIndex = 3;
-            this.lblGenre.Text = "label1";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(7, 251);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 16);
+            this.label2.Size = new System.Drawing.Size(63, 16);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Genre:";
+            this.label2.Text = "Genre(s):";
             // 
             // label1
             // 
@@ -112,21 +103,21 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "ID:\r\n\r\nPaginas:\r\n\r\nPublicatie:\r\n\r\nScore:\r\n\r\nUitgever:";
             // 
-            // lblData
+            // lblid
             // 
-            this.lblData.AutoSize = true;
-            this.lblData.Location = new System.Drawing.Point(98, 30);
-            this.lblData.Name = "lblData";
-            this.lblData.Size = new System.Drawing.Size(45, 16);
-            this.lblData.TabIndex = 0;
-            this.lblData.Text = "label1";
+            this.lblid.AutoSize = true;
+            this.lblid.Location = new System.Drawing.Point(98, 30);
+            this.lblid.Name = "lblid";
+            this.lblid.Size = new System.Drawing.Size(19, 16);
+            this.lblid.TabIndex = 0;
+            this.lblid.Text = "id";
             // 
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.btnAdd.Location = new System.Drawing.Point(199, 340);
+            this.btnAdd.Location = new System.Drawing.Point(205, 428);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(244, 37);
+            this.btnAdd.Size = new System.Drawing.Size(232, 37);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "Toevoegen...";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -134,29 +125,84 @@
             // 
             // btnChange
             // 
-            this.btnChange.Location = new System.Drawing.Point(199, 384);
+            this.btnChange.Location = new System.Drawing.Point(6, 365);
             this.btnChange.Name = "btnChange";
-            this.btnChange.Size = new System.Drawing.Size(244, 37);
+            this.btnChange.Size = new System.Drawing.Size(232, 37);
             this.btnChange.TabIndex = 3;
             this.btnChange.Text = "Bewerken...";
             this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.Click += new System.EventHandler(this.btnChange_Click);
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(14, 340);
+            this.btnFilter.Enabled = false;
+            this.btnFilter.Location = new System.Drawing.Point(14, 379);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(167, 37);
             this.btnFilter.TabIndex = 4;
             this.btnFilter.Text = "Filteren";
             this.btnFilter.UseVisualStyleBackColor = true;
             // 
+            // lblPages
+            // 
+            this.lblPages.AutoSize = true;
+            this.lblPages.Location = new System.Drawing.Point(98, 63);
+            this.lblPages.Name = "lblPages";
+            this.lblPages.Size = new System.Drawing.Size(47, 16);
+            this.lblPages.TabIndex = 6;
+            this.lblPages.Text = "pages";
+            // 
+            // lblPublYear
+            // 
+            this.lblPublYear.AutoSize = true;
+            this.lblPublYear.Location = new System.Drawing.Point(98, 95);
+            this.lblPublYear.Name = "lblPublYear";
+            this.lblPublYear.Size = new System.Drawing.Size(36, 16);
+            this.lblPublYear.TabIndex = 7;
+            this.lblPublYear.Text = "1000";
+            // 
+            // lblPubl
+            // 
+            this.lblPubl.AutoSize = true;
+            this.lblPubl.Location = new System.Drawing.Point(98, 158);
+            this.lblPubl.Name = "lblPubl";
+            this.lblPubl.Size = new System.Drawing.Size(37, 16);
+            this.lblPubl.TabIndex = 9;
+            this.lblPubl.Text = "publi";
+            // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.Location = new System.Drawing.Point(98, 126);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(15, 16);
+            this.lblScore.TabIndex = 10;
+            this.lblScore.Text = "5";
+            // 
+            // lbxAuthors
+            // 
+            this.lbxAuthors.FormattingEnabled = true;
+            this.lbxAuthors.ItemHeight = 15;
+            this.lbxAuthors.Location = new System.Drawing.Point(101, 192);
+            this.lbxAuthors.Name = "lbxAuthors";
+            this.lbxAuthors.Size = new System.Drawing.Size(120, 49);
+            this.lbxAuthors.TabIndex = 11;
+            // 
+            // lbxGenres
+            // 
+            this.lbxGenres.FormattingEnabled = true;
+            this.lbxGenres.ItemHeight = 15;
+            this.lbxGenres.Location = new System.Drawing.Point(101, 251);
+            this.lbxGenres.Name = "lbxGenres";
+            this.lbxGenres.Size = new System.Drawing.Size(120, 64);
+            this.lbxGenres.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 433);
+            this.ClientSize = new System.Drawing.Size(461, 477);
             this.Controls.Add(this.btnFilter);
-            this.Controls.Add(this.btnChange);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.gbxData);
             this.Controls.Add(this.lbxBooks);
@@ -177,15 +223,19 @@
 
         private System.Windows.Forms.ListBox lbxBooks;
         private System.Windows.Forms.GroupBox gbxData;
-        private System.Windows.Forms.Label lblData;
+        private System.Windows.Forms.Label lblid;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblGenre;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lblAuthors;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnChange;
         private System.Windows.Forms.Button btnFilter;
+        private System.Windows.Forms.ListBox lbxGenres;
+        private System.Windows.Forms.ListBox lbxAuthors;
+        private System.Windows.Forms.Label lblScore;
+        private System.Windows.Forms.Label lblPubl;
+        private System.Windows.Forms.Label lblPublYear;
+        private System.Windows.Forms.Label lblPages;
     }
 }
 

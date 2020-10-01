@@ -18,10 +18,12 @@ namespace MyLibrary
         public int Year;
         public int Pages;
         public int Score;
-        public List<string> Authors;
+        //public List<string> Authors;
+        public bool IsChanging;
 
-        public FormAddBook()
+        public FormAddBook(bool isChanging)
         {
+            IsChanging = isChanging;
             InitializeComponent();
         }
         private void FormAddBook_Load(object sender, EventArgs e)
@@ -29,6 +31,22 @@ namespace MyLibrary
             LoadPublisherList();
             LoadAuthorList();
             LoadGenreList();
+
+            if (IsChanging)
+            {
+                ChangeTexts();
+            }
+
+        }
+        private void ChangeTexts()
+        {
+            Text = "Boek Bewerken...";
+            BtnAdd.Text = "Bewerk";
+            txtTitle.Text = Title;
+            numPages.Value = Pages;
+            numYear.Value = Year;
+            numScore.Value = Score;
+            cbxPublisher.SelectedValue = PublisherId;
         }
         private void LoadPublisherList()
         {
@@ -64,7 +82,7 @@ namespace MyLibrary
 
             }
         }
-        private void BtnAdd_Click(object sender, EventArgs e)
+        private void AddNewBook()
         {
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
@@ -105,6 +123,23 @@ namespace MyLibrary
                 }
                 ctx.SaveChanges();
             }
+
+        }
+        private void ChangeBook()
+        {
+
+        }
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            if (IsChanging)
+            {
+                ChangeBook();
+            }
+            else
+            {
+                AddNewBook();
+            }
+
             DialogResult = DialogResult.OK;
         }
 

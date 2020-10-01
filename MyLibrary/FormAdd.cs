@@ -22,6 +22,7 @@ namespace MyLibrary
         private void FormAdd_Load(object sender, EventArgs e)
         {
             cbxAddList.Items.AddRange(selectArr);
+            cbxAddList.SelectedIndex = 0;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
