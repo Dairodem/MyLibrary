@@ -44,6 +44,8 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
+            this.cbxSort = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.gbxData.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,14 +53,15 @@
             // 
             this.lbxBooks.FormattingEnabled = true;
             this.lbxBooks.ItemHeight = 15;
-            this.lbxBooks.Location = new System.Drawing.Point(12, 20);
+            this.lbxBooks.Location = new System.Drawing.Point(12, 71);
             this.lbxBooks.Name = "lbxBooks";
-            this.lbxBooks.Size = new System.Drawing.Size(166, 304);
+            this.lbxBooks.Size = new System.Drawing.Size(166, 274);
             this.lbxBooks.TabIndex = 0;
             this.lbxBooks.SelectedIndexChanged += new System.EventHandler(this.lbxBooks_SelectedIndexChanged);
             // 
             // gbxData
             // 
+            this.gbxData.BackColor = System.Drawing.Color.FloralWhite;
             this.gbxData.Controls.Add(this.lbxGenres);
             this.gbxData.Controls.Add(this.lbxAuthors);
             this.gbxData.Controls.Add(this.lblScore);
@@ -133,12 +136,13 @@
             // 
             // btnChange
             // 
+            this.btnChange.BackColor = System.Drawing.Color.OldLace;
             this.btnChange.Location = new System.Drawing.Point(6, 322);
             this.btnChange.Name = "btnChange";
             this.btnChange.Size = new System.Drawing.Size(232, 37);
             this.btnChange.TabIndex = 3;
             this.btnChange.Text = "Bewerken...";
-            this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.UseVisualStyleBackColor = false;
             this.btnChange.Click += new System.EventHandler(this.btnChange_Click);
             // 
             // label4
@@ -190,17 +194,17 @@
             // 
             // btnFilter
             // 
-            this.btnFilter.Enabled = false;
-            this.btnFilter.Location = new System.Drawing.Point(12, 385);
+            this.btnFilter.Location = new System.Drawing.Point(12, 403);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(167, 37);
             this.btnFilter.TabIndex = 4;
             this.btnFilter.Text = "Filteren";
             this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(10, 336);
+            this.btnRemove.Location = new System.Drawing.Point(12, 351);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(167, 37);
             this.btnRemove.TabIndex = 5;
@@ -208,11 +212,32 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // cbxSort
+            // 
+            this.cbxSort.FormattingEnabled = true;
+            this.cbxSort.Location = new System.Drawing.Point(12, 33);
+            this.cbxSort.Name = "cbxSort";
+            this.cbxSort.Size = new System.Drawing.Size(167, 23);
+            this.cbxSort.TabIndex = 6;
+            this.cbxSort.SelectedIndexChanged += new System.EventHandler(this.cbxSort_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 16);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Sorteren op:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(461, 477);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cbxSort);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.btnAdd);
@@ -228,6 +253,7 @@
             this.gbxData.ResumeLayout(false);
             this.gbxData.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -249,6 +275,8 @@
         private System.Windows.Forms.Label lblPublYear;
         private System.Windows.Forms.Label lblPages;
         private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.ComboBox cbxSort;
+        private System.Windows.Forms.Label label3;
     }
 }
 

@@ -27,6 +27,19 @@ namespace MyLibrary
 
     public partial class Form1 : Form
     {
+
+        Dictionary<string, string> sortDic = new Dictionary<string, string>()
+        {
+            { "Titel A->Z","titleUp" },
+            { "Titel Z->A","titleDown" },
+            { "Pagina's Laag->Hoog","pagesUp" },
+            { "Pagina's Hoog->Laag","pagesDown" },
+            { "Publicatie Laag->Hoog","yearUp" },
+            { "Publicatie Hoog->Laag","yearDown" } 
+
+        };
+
+
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +47,16 @@ namespace MyLibrary
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadBookList();
+            LoadComboBox();
+            //LoadBookList();
+        }
+        private void LoadComboBox()
+        {
+            cbxSort.DataSource = null;
+            cbxSort.DataSource = new BindingSource(sortDic, null);
+            cbxSort.DisplayMember = "Key";
+            cbxSort.ValueMember = "Value";
+            cbxSort.SelectedIndex = 0;
         }
         private void UpdateData()
         {
@@ -131,7 +153,7 @@ namespace MyLibrary
         {
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
-                var booklist = ctx.Books.Select(x => x).ToList();
+                List<Book> booklist = new List<Book>();
                 lbxBooks.DisplayMember = "Titel";
                 lbxBooks.ValueMember = "Id";
                 lbxBooks.DataSource = booklist;
@@ -209,6 +231,10 @@ namespace MyLibrary
 
             return id;
         }
+        public void Test()
+        {
+
+        }
         private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateData();
@@ -257,6 +283,61 @@ namespace MyLibrary
                 DeleteBook();
                 LoadBookList();
                 UpdateData();
+            }
+        }
+
+        private void cbxSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                List<Book> booklist = new List<Book>();
+
+                switch (cbxSort.SelectedValue.ToString())
+                {
+                    case "titleDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.Titel).ToList();
+                        break;
+                    case "pagesUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.AantalPaginas).ToList();
+                        break;
+                    case "pagesDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.AantalPaginas).ToList();
+                        break;
+                    case "yearUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.publicatie).ToList();
+                        break;
+                    case "yearDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.publicatie).ToList();
+                        break;
+                    case "titleUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Titel).ToList();
+                        break;
+
+                    default:
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Id).ToList();
+                        break;
+                }
+
+                lbxBooks.DisplayMember = "Titel";
+                lbxBooks.ValueMember = "Id";
+                lbxBooks.DataSource = booklist;
+
+
+            }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            FormFilter formFilter = new FormFilter();
+            if (formFilter.ShowDialog() == DialogResult.OK)
+            {
+                using (BibliotheekEntities ctx = new BibliotheekEntities())
+                {
+                    List<BookAuthor> authorSearch = ctx.BookAuthors.Where(a => a.AuthorId == formFilter.FilterData[0]).ToList();
+                    List<Publisher> publisherSearch = ctx.Publishers.Where(a => a.Id == formFilter.FilterData[1]).ToList();
+                    List<BookGenre> genreSearch = ctx.BookGenres.Where(a => a.GenreId == formFilter.FilterData[2]).ToList();
+
+                }
             }
         }
     }
