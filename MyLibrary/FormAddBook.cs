@@ -147,8 +147,22 @@ namespace MyLibrary
         {
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
-                //--Boek selectered met Id...
+                //--Boek selecteren met Id...
                 Book thisBook = ctx.Books.Where(x => x.Id == Id).FirstOrDefault();
+
+                //--alle links van dit boek-id in tussentabel naar lijst (boekgenres en boekauteurs) 
+                List<BookAuthor> authorLink = ctx.BookAuthors.Where(x => x.BookId == Id).ToList();
+                List<BookGenre> genresLink = ctx.BookGenres.Where(x => x.BookId == Id).ToList();
+
+                //--verwijder alle links van dit boek in tussentabellen
+                foreach (BookAuthor link in authorLink)
+                {
+                    ctx.BookAuthors.Remove(link);
+                }
+                foreach (BookGenre link in genresLink)
+                {
+                    ctx.BookGenres.Remove(link);
+                }
 
                 //--Reset gegevens van dit boek
                 thisBook.Titel = txtTitle.Text;
@@ -156,6 +170,33 @@ namespace MyLibrary
                 thisBook.publicatie = (int)numYear.Value;
                 thisBook.PublisherId = (int)cbxPublisher.SelectedValue;
                 thisBook.AantalPaginas = (int)numPages.Value;
+
+
+                //--Nieuw Book-Auteur Tussentabel  entry voor elke auteur
+                foreach (ListViewItem author in lvAuthors.CheckedItems)
+                {
+                    int entry = ctx.Authors.Where(a => (a.Voornaam + " " + a.Achternaam) == author.Text).Select(x => x.Id).FirstOrDefault();
+
+                    ctx.BookAuthors.Add(new BookAuthor()
+                    {
+                        BookId = thisBook.Id,
+                        AuthorId = entry
+                    });
+                }
+
+                //--Nieuw Book-Genre Tussentabel  entry voor elk genre
+                foreach (ListViewItem genre in lvGenres.CheckedItems)
+                {
+                    int entry = ctx.Genres.Where(a => a.Genre1 == genre.Text).Select(x => x.Id).FirstOrDefault();
+
+                    ctx.BookGenres.Add(new BookGenre()
+                    {
+                        BookId = thisBook.Id,
+                        GenreId = entry
+                    });
+                }
+
+                ctx.SaveChanges();
             }
 
         }

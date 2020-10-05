@@ -11,19 +11,11 @@ using System.Windows.Forms;
 
 /*------------------------ TO DO ------------------------------
  * 
- * Bewerken van boeken
- * 
- * -bij bewerken; data controleren of ze al dan niet veranderd zijn bij de listview
- * 
- * 
- * 
- * verwijderen van boeken
- * 
- * - alle data uit database verwijderen
- * 
- * 
  * sorteren van boekenlijst
+ * 
+ * 
  * (meerdere) filters toepassen
+ * UpdateData method herbekijken
  * 
  * error handeling
  * 
@@ -105,6 +97,35 @@ namespace MyLibrary
                 }
             }
 
+        }
+        private void DeleteBook()
+        {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                //--selectie uit listbox opslaan
+                int myId = (int)lbxBooks.SelectedValue;
+
+                //--Boek selecteren obv myId en verwijderen
+                Book thisBook = ctx.Books.Where(x => x.Id == myId).FirstOrDefault();
+                ctx.Books.Remove(thisBook);
+
+                //--alle links van dit boek-id in tussentabel naar lijst (boekgenres en boekauteurs) 
+                List<BookAuthor> authorLink = ctx.BookAuthors.Where(x => x.BookId == myId).ToList();
+                List<BookGenre> genresLink = ctx.BookGenres.Where(x => x.BookId == myId).ToList();
+
+                //--verwijder alle links van dit boek in tussentabellen
+                foreach (BookAuthor link in authorLink)
+                {
+                    ctx.BookAuthors.Remove(link);
+                }
+                foreach (BookGenre link in genresLink)
+                {
+                    ctx.BookGenres.Remove(link);
+                }
+
+                //-- entity opslaan
+                ctx.SaveChanges();
+            }
         }
         private void LoadBookList()
         {
@@ -220,7 +241,22 @@ namespace MyLibrary
 
             if (formChangeBook.ShowDialog() == DialogResult.OK)
             {
-                // do something after windows closes
+                UpdateData();
+                LoadBookList();
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+
+            result = MessageBox.Show("Weet u zeker dat u dit boek wilt verijderen?","",buttons);
+            if (result == DialogResult.Yes)
+            {
+                DeleteBook();
+                LoadBookList();
+                UpdateData();
             }
         }
     }
