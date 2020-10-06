@@ -72,6 +72,46 @@ namespace MyLibrary
             cbxPublisher.Enabled = false;
             cbxAuthors.Enabled = false;
         }
+        private void EnableScoreFields()
+        {
+            switch (cbxScore.SelectedItem.ToString())
+            {
+                case "tussen":
+                    numScoreLow.Visible = true;
+                    lblScoreSign.Text = "en";
+                    break;
+                case "precies":
+                case "vanaf":
+                case "tot":
+                    numScoreLow.Visible = false;
+                    lblScoreSign.Text = "";
+                    break;
+                default:
+                    break;
+            }
+            ScoreText = cbxScore.SelectedItem.ToString();
+        }
+        private void EnableYearFields()
+        {
+            switch (cbxPubl.SelectedItem.ToString())
+            {
+                case "tussen":
+                    numYearLow.Visible = true;
+                    lblPubSign.Text = "en";
+                    break;
+                case "precies":
+                case "vanaf":
+                case "tot":
+                    numYearLow.Visible = false;
+                    lblPubSign.Text = "";
+                    break;
+                default:
+                    break;
+            }
+
+            PubliText = cbxPubl.SelectedItem.ToString();
+
+        }
 
         private void chkAuthor_CheckedChanged(object sender, EventArgs e)
         {
@@ -102,42 +142,11 @@ namespace MyLibrary
         }
         private void cbxPubl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (cbxPubl.SelectedItem.ToString())
-            {
-                case "tussen":
-                    numYearLow.Visible = true;
-                    lblPubSign.Text = "en";
-                    break;
-                case "precies":
-                case "vanaf":
-                case "tot":
-                    numYearLow.Visible = false;
-                    lblPubSign.Text = "";
-                    break;
-                default:
-                    break;
-            }
-
-            PubliText = cbxPubl.SelectedItem.ToString();
+            EnableYearFields();
         }
         private void cbxScore_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (cbxScore.SelectedItem.ToString())
-            {
-                case "tussen":
-                    numScoreLow.Visible = true;
-                    lblScoreSign.Text = "en";
-                    break;
-                case "precies":
-                case "vanaf":
-                case "tot":
-                    numScoreLow.Visible = false;
-                    lblScoreSign.Text = "";
-                    break;
-                default:
-                    break;
-            }
-            ScoreText = cbxScore.SelectedItem.ToString();
+            EnableScoreFields();
         }
         private void btnFilter_Click(object sender, EventArgs e)
         {

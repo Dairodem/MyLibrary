@@ -42,20 +42,6 @@ namespace MyLibrary
             }
 
         }
-        private void CheckBoxes(ListView listView, List<string> list)
-        {
-            foreach (string name in list)
-            {
-                foreach (ListViewItem item in listView.Items)
-                {
-                    if (name == item.Text)
-                    {
-                        item.Checked = true;
-                        break;
-                    }
-                }
-            }
-        }
         private void ChangeTexts()
         {
             Text = "Boek Bewerken...";
@@ -199,6 +185,20 @@ namespace MyLibrary
                 ctx.SaveChanges();
             }
 
+        }
+        private void CheckBoxes(ListView listView, List<string> list)
+        {
+            foreach (string name in list)
+            {
+                foreach (ListViewItem item in listView.Items)
+                {
+                    if (name == item.Text)
+                    {
+                        item.Checked = true;
+                        break;
+                    }
+                }
+            }
         }
         private void BtnAdd_Click(object sender, EventArgs e)
         {

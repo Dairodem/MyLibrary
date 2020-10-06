@@ -11,9 +11,7 @@ using System.Windows.Forms;
 
 /*------------------------ TO DO ------------------------------
  * 
- * (meerdere) filters toepassen
- * 
- * 
+ * zorgen dat de sorteerfunctie ook werkt op een gefilterde lijst
  * 
  * UpdateData method herbekijken
  * 
@@ -222,108 +220,7 @@ namespace MyLibrary
 
             }
         }
-        private int ReturnPublisherId()
-        {
-            int id = 0;
-            using (BibliotheekEntities ctx = new BibliotheekEntities())
-            {
-                id = ctx.Publishers.Where(i => i.Naam == lblPubl.Text).Select(f => f.Id).FirstOrDefault();
-            }
-
-            return id;
-        }
-        private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            ShowSelectionForm();
-        }
-
-        private void btnChange_Click(object sender, EventArgs e)
-        {
-            FormAddBook formChangeBook = new FormAddBook(true);
-            formChangeBook.Title = gbxData.Text;
-            formChangeBook.PublisherId = ReturnPublisherId();
-            formChangeBook.Year = Convert.ToInt32(lblPublYear.Text);
-            formChangeBook.Pages = Convert.ToInt32(lblPages.Text);
-            formChangeBook.Score = Convert.ToInt32(lblScore.Text);
-            formChangeBook.Id = Convert.ToInt32(lblid.Text);
-
-            foreach (string author in lbxAuthors.Items)
-            {
-                formChangeBook.AuthorsList.Add(author);
-            }
-
-            foreach (string genre in lbxGenres.Items)
-            {
-                formChangeBook.GenreList.Add(genre);
-            }
-
-            if (formChangeBook.ShowDialog() == DialogResult.OK)
-            {
-                UpdateData();
-                LoadBookList();
-            }
-        }
-
-        private void btnRemove_Click(object sender, EventArgs e)
-        {
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result;
-
-            result = MessageBox.Show("Weet u zeker dat u dit boek wilt verijderen?","",buttons);
-            if (result == DialogResult.Yes)
-            {
-                DeleteBook();
-                LoadBookList();
-                UpdateData();
-            }
-        }
-
-        private void cbxSort_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            using (BibliotheekEntities ctx = new BibliotheekEntities())
-            {
-                List<Book> booklist = new List<Book>();
-
-                switch (cbxSort.SelectedValue.ToString())
-                {
-                    case "titleDown":
-                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.Titel).ToList();
-                        break;
-                    case "pagesUp":
-                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.AantalPaginas).ToList();
-                        break;
-                    case "pagesDown":
-                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.AantalPaginas).ToList();
-                        break;
-                    case "yearUp":
-                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.publicatie).ToList();
-                        break;
-                    case "yearDown":
-                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.publicatie).ToList();
-                        break;
-                    case "titleUp":
-                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Titel).ToList();
-                        break;
-
-                    default:
-                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Id).ToList();
-                        break;
-                }
-
-                lbxBooks.DisplayMember = "Titel";
-                lbxBooks.ValueMember = "Id";
-                lbxBooks.DataSource = booklist;
-
-
-            }
-        }
-
-        private void btnFilter_Click(object sender, EventArgs e)
+        private void FilterBooks()
         {
             FormFilter formFilter = new FormFilter();
             if (formFilter.ShowDialog() == DialogResult.OK)
@@ -331,7 +228,7 @@ namespace MyLibrary
                 using (BibliotheekEntities ctx = new BibliotheekEntities())
                 {
                     int filter = -1;
-                    List<Book> books = ctx.Books.Select( b => b).ToList();
+                    List<Book> books = ctx.Books.Select(b => b).ToList();
 
                     //-- Filteren op Auteur
                     if (formFilter.FilterData[0] != -1)
@@ -341,7 +238,7 @@ namespace MyLibrary
                             ctx.BookAuthors,
                             b => b.Id,
                             ba => ba.BookId,
-                            (b,ba) => new {b, ba }).Where(j => j.ba.AuthorId == filter).Select(x => x.b).ToList();
+                            (b, ba) => new { b, ba }).Where(j => j.ba.AuthorId == filter).Select(x => x.b).ToList();
 
                         List<Book> books1 = myBooks.
                             Join(books,
@@ -469,6 +366,108 @@ namespace MyLibrary
 
                 }
             }
+
+        }
+        private int ReturnPublisherId()
+        {
+            int id = 0;
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                id = ctx.Publishers.Where(i => i.Naam == lblPubl.Text).Select(f => f.Id).FirstOrDefault();
+            }
+
+            return id;
+        }
+
+        private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateData();
+        }
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            ShowSelectionForm();
+        }
+        private void btnChange_Click(object sender, EventArgs e)
+        {
+            FormAddBook formChangeBook = new FormAddBook(true);
+            formChangeBook.Title = gbxData.Text;
+            formChangeBook.PublisherId = ReturnPublisherId();
+            formChangeBook.Year = Convert.ToInt32(lblPublYear.Text);
+            formChangeBook.Pages = Convert.ToInt32(lblPages.Text);
+            formChangeBook.Score = Convert.ToInt32(lblScore.Text);
+            formChangeBook.Id = Convert.ToInt32(lblid.Text);
+
+            foreach (string author in lbxAuthors.Items)
+            {
+                formChangeBook.AuthorsList.Add(author);
+            }
+
+            foreach (string genre in lbxGenres.Items)
+            {
+                formChangeBook.GenreList.Add(genre);
+            }
+
+            if (formChangeBook.ShowDialog() == DialogResult.OK)
+            {
+                UpdateData();
+                LoadBookList();
+            }
+        }
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+
+            result = MessageBox.Show("Weet u zeker dat u dit boek wilt verijderen?","",buttons);
+            if (result == DialogResult.Yes)
+            {
+                DeleteBook();
+                LoadBookList();
+                UpdateData();
+            }
+        }
+        private void cbxSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (BibliotheekEntities ctx = new BibliotheekEntities())
+            {
+                List<Book> booklist = new List<Book>();
+
+                switch (cbxSort.SelectedValue.ToString())
+                {
+                    case "titleDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.Titel).ToList();
+                        break;
+                    case "pagesUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.AantalPaginas).ToList();
+                        break;
+                    case "pagesDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.AantalPaginas).ToList();
+                        break;
+                    case "yearUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.publicatie).ToList();
+                        break;
+                    case "yearDown":
+                        booklist = ctx.Books.Select(x => x).OrderByDescending(x => x.publicatie).ToList();
+                        break;
+                    case "titleUp":
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Titel).ToList();
+                        break;
+
+                    default:
+                        booklist = ctx.Books.Select(x => x).OrderBy(x => x.Id).ToList();
+                        break;
+                }
+
+                lbxBooks.DisplayMember = "Titel";
+                lbxBooks.ValueMember = "Id";
+                lbxBooks.DataSource = booklist;
+
+
+            }
+        }
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            FilterBooks();
         }
         
     }
