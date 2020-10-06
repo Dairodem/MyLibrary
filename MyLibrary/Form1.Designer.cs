@@ -55,7 +55,7 @@
             this.lbxBooks.ItemHeight = 15;
             this.lbxBooks.Location = new System.Drawing.Point(12, 71);
             this.lbxBooks.Name = "lbxBooks";
-            this.lbxBooks.Size = new System.Drawing.Size(166, 274);
+            this.lbxBooks.Size = new System.Drawing.Size(166, 259);
             this.lbxBooks.TabIndex = 0;
             this.lbxBooks.SelectedIndexChanged += new System.EventHandler(this.lbxBooks_SelectedIndexChanged);
             // 
@@ -194,7 +194,7 @@
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(12, 403);
+            this.btnFilter.Location = new System.Drawing.Point(11, 403);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(167, 37);
             this.btnFilter.TabIndex = 4;
@@ -204,7 +204,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(12, 351);
+            this.btnRemove.Location = new System.Drawing.Point(12, 336);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(167, 37);
             this.btnRemove.TabIndex = 5;
@@ -235,7 +235,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(461, 477);
+            this.ClientSize = new System.Drawing.Size(454, 450);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbxSort);
             this.Controls.Add(this.btnRemove);

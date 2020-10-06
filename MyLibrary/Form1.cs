@@ -153,7 +153,7 @@ namespace MyLibrary
         {
             using (BibliotheekEntities ctx = new BibliotheekEntities())
             {
-                List<Book> booklist = new List<Book>();
+                List<Book> booklist = ctx.Books.Select(x => x).ToList();
                 lbxBooks.DisplayMember = "Titel";
                 lbxBooks.ValueMember = "Id";
                 lbxBooks.DataSource = booklist;
@@ -183,6 +183,7 @@ namespace MyLibrary
                         MessageBox.Show("Error");
                         break;
                 }
+
             }
 
         }
@@ -330,21 +331,25 @@ namespace MyLibrary
                 using (BibliotheekEntities ctx = new BibliotheekEntities())
                 {
                     int filter = -1;
+                    List<Book> books = ctx.Books.Select( b => b).ToList();
 
                     //-- Filteren op Auteur
                     if (formFilter.FilterData[0] != -1)
                     {
                         filter = formFilter.FilterData[0];
-                        List<Book> books = ctx.Books.Join(
+                        List<Book> myBooks = ctx.Books.Join(
                             ctx.BookAuthors,
                             b => b.Id,
                             ba => ba.BookId,
                             (b,ba) => new {b, ba }).Where(j => j.ba.AuthorId == filter).Select(x => x.b).ToList();
 
-                        lbxBooks.DataSource = null;
-                        lbxBooks.DisplayMember = "Titel";
-                        lbxBooks.ValueMember = "Id";
-                        lbxBooks.DataSource = books;
+                        List<Book> books1 = myBooks.
+                            Join(books,
+                            m => m,
+                            b => b,
+                            (m, b) => m).ToList();
+
+                        books = books1;
 
                     }
 
@@ -353,11 +358,15 @@ namespace MyLibrary
                     {
                         filter = formFilter.FilterData[1];
 
-                        List<Book> books = ctx.Books.Where(b => b.PublisherId == filter).ToList();
-                        lbxBooks.DataSource = null;
-                        lbxBooks.DisplayMember = "Titel";
-                        lbxBooks.ValueMember = "Id";
-                        lbxBooks.DataSource = books;
+                        List<Book> myBooks = ctx.Books.Where(b => b.PublisherId == filter).ToList();
+
+                        List<Book> books1 = myBooks.
+                            Join(books,
+                            m => m,
+                            b => b,
+                            (m, b) => m).ToList();
+
+                        books = books1;
 
                     }
 
@@ -365,16 +374,19 @@ namespace MyLibrary
                     if (formFilter.FilterData[2] != -1)
                     {
                         filter = formFilter.FilterData[2];
-                        List<Book> books = ctx.Books.Join(
+                        List<Book> myBooks = ctx.Books.Join(
                             ctx.BookGenres,
                             b => b.Id,
                             bg => bg.BookId,
                             (b, bg) => new { b, bg }).Where(j => j.bg.GenreId == filter).Select(x => x.b).ToList();
 
-                        lbxBooks.DataSource = null;
-                        lbxBooks.DisplayMember = "Titel";
-                        lbxBooks.ValueMember = "Id";
-                        lbxBooks.DataSource = books;
+                        List<Book> books1 = myBooks.
+                            Join(books,
+                            m => m,
+                            b => b,
+                            (m, b) => m).ToList();
+
+                        books = books1;
 
                     }
 
@@ -383,31 +395,35 @@ namespace MyLibrary
                     {
                         int filter2 = formFilter.FilterData[3];
                         filter = formFilter.FilterData[4];
-                        List<Book> books = new List<Book>();
+                        List<Book> myBooks = new List<Book>();
 
                         switch (formFilter.PubliText)
                         {
                             case "tussen":
-                                books = ctx.Books.Where(b => (b.publicatie <= filter && b.publicatie >= filter2)).ToList();
+                                myBooks = ctx.Books.Where(b => b.publicatie <= filter && b.publicatie >= filter2).ToList();
                                 break;
                             case "precies":
-                                books = ctx.Books.Where(b => b.publicatie == filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.publicatie == filter).ToList();
                                 break;
                             case "vanaf":
-                                books = ctx.Books.Where(b => b.publicatie >= filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.publicatie >= filter).ToList();
                                 break;
                             case "tot":
-                                books = ctx.Books.Where(b => b.publicatie <= filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.publicatie <= filter).ToList();
                                 break;
                             default:
-                                MessageBox.Show("something wrong");
+                                MessageBox.Show("something went wrong");
                                 break;
                         }
 
-                        lbxBooks.DataSource = null;
-                        lbxBooks.DisplayMember = "Titel";
-                        lbxBooks.ValueMember = "Id";
-                        lbxBooks.DataSource = books;
+                        List<Book> books1 = myBooks.
+                            Join(books,
+                            m => m,
+                            b => b,
+                            (m, b) => m).ToList();
+
+                        books = books1;
+
                     }
 
                     //-- Filteren op Score
@@ -415,36 +431,46 @@ namespace MyLibrary
                     {
                         int filter2 = formFilter.FilterData[5];
                         filter = formFilter.FilterData[6];
-                        List<Book> books = new List<Book>();
+                        List<Book> myBooks = new List<Book>();
 
                         switch (formFilter.ScoreText)
                         {
                             case "tussen":
-                                books = ctx.Books.Where(b => (b.Score <= filter && b.Score >= filter2)).ToList();
+                                myBooks = ctx.Books.Where(b => (b.Score <= filter && b.Score >= filter2)).ToList();
                                 break;
                             case "precies":
-                                books = ctx.Books.Where(b => b.Score == filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.Score == filter).ToList();
                                 break;
                             case "vanaf":
-                                books = ctx.Books.Where(b => b.Score >= filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.Score >= filter).ToList();
                                 break;
                             case "tot":
-                                books = ctx.Books.Where(b => b.Score <= filter).ToList();
+                                myBooks = ctx.Books.Where(b => b.Score <= filter).ToList();
                                 break;
                             default:
                                 MessageBox.Show("something wrong");
                                 break;
                         }
 
-                        lbxBooks.DataSource = null;
-                        lbxBooks.DisplayMember = "Titel";
-                        lbxBooks.ValueMember = "Id";
-                        lbxBooks.DataSource = books;
+                        List<Book> books1 = myBooks.
+                            Join(books,
+                            m => m,
+                            b => b,
+                            (m, b) => m).ToList();
+
+                        books = books1;
                     }
 
+                    //-- Listbox vullen met Gefilterde boeken
+                    lbxBooks.DataSource = null;
+                    lbxBooks.DisplayMember = "Titel";
+                    lbxBooks.ValueMember = "Id";
+                    lbxBooks.DataSource = books;
 
                 }
             }
         }
+        
     }
 }
+
