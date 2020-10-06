@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 /*------------------------ TO DO ------------------------------
  * 
- * sorteren van boekenlijst
- * 
- * 
  * (meerdere) filters toepassen
+ * 
+ * 
+ * 
  * UpdateData method herbekijken
  * 
  * error handeling
@@ -231,10 +231,6 @@ namespace MyLibrary
 
             return id;
         }
-        public void Test()
-        {
-
-        }
         private void lbxBooks_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateData();
@@ -333,9 +329,119 @@ namespace MyLibrary
             {
                 using (BibliotheekEntities ctx = new BibliotheekEntities())
                 {
-                    List<BookAuthor> authorSearch = ctx.BookAuthors.Where(a => a.AuthorId == formFilter.FilterData[0]).ToList();
-                    List<Publisher> publisherSearch = ctx.Publishers.Where(a => a.Id == formFilter.FilterData[1]).ToList();
-                    List<BookGenre> genreSearch = ctx.BookGenres.Where(a => a.GenreId == formFilter.FilterData[2]).ToList();
+                    int filter = -1;
+
+                    //-- Filteren op Auteur
+                    if (formFilter.FilterData[0] != -1)
+                    {
+                        filter = formFilter.FilterData[0];
+                        List<Book> books = ctx.Books.Join(
+                            ctx.BookAuthors,
+                            b => b.Id,
+                            ba => ba.BookId,
+                            (b,ba) => new {b, ba }).Where(j => j.ba.AuthorId == filter).Select(x => x.b).ToList();
+
+                        lbxBooks.DataSource = null;
+                        lbxBooks.DisplayMember = "Titel";
+                        lbxBooks.ValueMember = "Id";
+                        lbxBooks.DataSource = books;
+
+                    }
+
+                    //-- Filteren op Uitgever
+                    if (formFilter.FilterData[1] != -1)
+                    {
+                        filter = formFilter.FilterData[1];
+
+                        List<Book> books = ctx.Books.Where(b => b.PublisherId == filter).ToList();
+                        lbxBooks.DataSource = null;
+                        lbxBooks.DisplayMember = "Titel";
+                        lbxBooks.ValueMember = "Id";
+                        lbxBooks.DataSource = books;
+
+                    }
+
+                    //-- Filteren op Genre
+                    if (formFilter.FilterData[2] != -1)
+                    {
+                        filter = formFilter.FilterData[2];
+                        List<Book> books = ctx.Books.Join(
+                            ctx.BookGenres,
+                            b => b.Id,
+                            bg => bg.BookId,
+                            (b, bg) => new { b, bg }).Where(j => j.bg.GenreId == filter).Select(x => x.b).ToList();
+
+                        lbxBooks.DataSource = null;
+                        lbxBooks.DisplayMember = "Titel";
+                        lbxBooks.ValueMember = "Id";
+                        lbxBooks.DataSource = books;
+
+                    }
+
+                    //-- Filteren op Publicatiejaar
+                    if (formFilter.FilterData[4] != -1)
+                    {
+                        int filter2 = formFilter.FilterData[3];
+                        filter = formFilter.FilterData[4];
+                        List<Book> books = new List<Book>();
+
+                        switch (formFilter.PubliText)
+                        {
+                            case "tussen":
+                                books = ctx.Books.Where(b => (b.publicatie <= filter && b.publicatie >= filter2)).ToList();
+                                break;
+                            case "precies":
+                                books = ctx.Books.Where(b => b.publicatie == filter).ToList();
+                                break;
+                            case "vanaf":
+                                books = ctx.Books.Where(b => b.publicatie >= filter).ToList();
+                                break;
+                            case "tot":
+                                books = ctx.Books.Where(b => b.publicatie <= filter).ToList();
+                                break;
+                            default:
+                                MessageBox.Show("something wrong");
+                                break;
+                        }
+
+                        lbxBooks.DataSource = null;
+                        lbxBooks.DisplayMember = "Titel";
+                        lbxBooks.ValueMember = "Id";
+                        lbxBooks.DataSource = books;
+                    }
+
+                    //-- Filteren op Score
+                    if (formFilter.FilterData[6] != -1)
+                    {
+                        int filter2 = formFilter.FilterData[5];
+                        filter = formFilter.FilterData[6];
+                        List<Book> books = new List<Book>();
+
+                        switch (formFilter.ScoreText)
+                        {
+                            case "tussen":
+                                books = ctx.Books.Where(b => (b.Score <= filter && b.Score >= filter2)).ToList();
+                                break;
+                            case "precies":
+                                books = ctx.Books.Where(b => b.Score == filter).ToList();
+                                break;
+                            case "vanaf":
+                                books = ctx.Books.Where(b => b.Score >= filter).ToList();
+                                break;
+                            case "tot":
+                                books = ctx.Books.Where(b => b.Score <= filter).ToList();
+                                break;
+                            default:
+                                MessageBox.Show("something wrong");
+                                break;
+                        }
+
+                        lbxBooks.DataSource = null;
+                        lbxBooks.DisplayMember = "Titel";
+                        lbxBooks.ValueMember = "Id";
+                        lbxBooks.DataSource = books;
+                    }
+
 
                 }
             }

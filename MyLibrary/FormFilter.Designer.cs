@@ -271,7 +271,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(328, 306);
+            this.ClientSize = new System.Drawing.Size(328, 313);
             this.Controls.Add(this.cbxGenres);
             this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.lblScoreSign);

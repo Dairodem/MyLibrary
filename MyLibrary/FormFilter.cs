@@ -13,6 +13,8 @@ namespace MyLibrary
     public partial class FormFilter : Form
     {
         public int[] FilterData = new int[7];
+        public string PubliText;
+        public string ScoreText;
 
         private string[] selectionTexts = new string[] { "precies", "tussen", "vanaf", "tot" };
 
@@ -115,6 +117,8 @@ namespace MyLibrary
                 default:
                     break;
             }
+
+            PubliText = cbxPubl.SelectedItem.ToString();
         }
         private void cbxScore_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -133,6 +137,7 @@ namespace MyLibrary
                 default:
                     break;
             }
+            ScoreText = cbxScore.SelectedItem.ToString();
         }
         private void btnFilter_Click(object sender, EventArgs e)
         {
